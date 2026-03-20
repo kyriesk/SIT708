@@ -87,57 +87,72 @@ public class CurrencyFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inputText = editTextNumber.getText().toString();
+                String inputText = editTextNumber.getText().toString().trim();
                 if (inputText.isEmpty()) {
                     Toast.makeText(getActivity(), "Please enter a number", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                double amount = Double.parseDouble(inputText);
+                double amount;
+                try {
+                    amount = Double.parseDouble(inputText);
+                } catch (NumberFormatException e) {
+                    Toast.makeText(getActivity(), "Invalid numeric input", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (amount < 0) {
+                    Toast.makeText(getActivity(), "Amount cannot be negative", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 String fromCurrency = spinnerFrom.getSelectedItem().toString();
                 String toCurrency = spinnerTo.getSelectedItem().toString();
 
+                if (fromCurrency.equals(toCurrency)) {
+                    Toast.makeText(getActivity(), "Source and target currencies are the same", Toast.LENGTH_SHORT).show();
+                    resultText.setText("Result: " + amount);
+                    return;
+                }
+
                 double result = convertCurrency(amount, fromCurrency, toCurrency);
-                resultText.setText("Result: " + result);
+                resultText.setText("Result: " + String.format("%.2f", result));
             }
         });
         return view;
     }
 
-        private double convertCurrency ( double amount, String fromCurrency, String toCurrency){
-            double usdRate = 1.00;
-            double audRate = 1.55;
-            double eurRate = 0.92;
-            double jpyRate = 148.50;
-            double gbpRate = 0.78;
+    private double convertCurrency(double amount, String fromCurrency, String toCurrency) {
+        double audRate = 1.55;
+        double eurRate = 0.92;
+        double jpyRate = 148.50;
+        double gbpRate = 0.78;
 
-            double amountInUsd = 0;
+        double amountInUsd = 0;
 
-            if (fromCurrency.equals("USD")) {
-                amountInUsd = amount;
-            } else if (fromCurrency.equals("AUD")) {
-                amountInUsd = amount / audRate;
-            } else if (fromCurrency.equals("EUR")) {
-                amountInUsd = amount / eurRate;
-            } else if (fromCurrency.equals("JPY")) {
-                amountInUsd = amount / jpyRate;
-            } else if (fromCurrency.equals("GBP")) {
-                amountInUsd = amount / gbpRate;
-            }
-            ;
-
-            if (toCurrency.equals("USD")) {
-                return amountInUsd;
-            } else if (toCurrency.equals("AUD")) {
-                return amountInUsd * audRate;
-            } else if (toCurrency.equals("EUR")) {
-                return amountInUsd * eurRate;
-            } else if (toCurrency.equals("JPY")) {
-                return amountInUsd * jpyRate;
-            } else if (toCurrency.equals("GBP")) {
-                return amountInUsd * gbpRate;
-            }
-            return amountInUsd;
+        if (fromCurrency.equals("USD")) {
+            amountInUsd = amount;
+        } else if (fromCurrency.equals("AUD")) {
+            amountInUsd = amount / audRate;
+        } else if (fromCurrency.equals("EUR")) {
+            amountInUsd = amount / eurRate;
+        } else if (fromCurrency.equals("JPY")) {
+            amountInUsd = amount / jpyRate;
+        } else if (fromCurrency.equals("GBP")) {
+            amountInUsd = amount / gbpRate;
         }
+
+        if (toCurrency.equals("USD")) {
+            return amountInUsd;
+        } else if (toCurrency.equals("AUD")) {
+            return amountInUsd * audRate;
+        } else if (toCurrency.equals("EUR")) {
+            return amountInUsd * eurRate;
+        } else if (toCurrency.equals("JPY")) {
+            return amountInUsd * jpyRate;
+        } else if (toCurrency.equals("GBP")) {
+            return amountInUsd * gbpRate;
+        }
+        return amountInUsd;
     }
+}

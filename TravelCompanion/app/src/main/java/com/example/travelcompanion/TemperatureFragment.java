@@ -14,6 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Locale;
+
 public class TemperatureFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
@@ -73,22 +75,44 @@ public class TemperatureFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inputText = editTextNumber.getText().toString();
+                String inputText = editTextNumber.getText().toString().trim();
                 if (inputText.isEmpty()) {
                     Toast.makeText(getActivity(), "Please enter a number", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                double amount = Double.parseDouble(inputText);
+
+                double amount;
+                try {
+                    amount = Double.parseDouble(inputText);
+                } catch (NumberFormatException e) {
+                    Toast.makeText(getActivity(), "Invalid numeric input", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 String from = spinnerFrom.getSelectedItem().toString();
                 String to = spinnerTo.getSelectedItem().toString();
-                double result = convertTemperature(amount, from, to);
-                resultText.setText("Result: " + result);
 
+                // Validate absolute zero
+                if ((from.equals("Kelvin") && amount < 0) ||
+                    (from.equals("Celsius") && amount < -273.15) ||
+                    (from.equals("Fahrenheit") && amount < -459.67)) {
+                    Toast.makeText(getActivity(), "Temperature cannot be below absolute zero", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (from.equals(to)) {
+                    Toast.makeText(getActivity(), "Source and target units are the same", Toast.LENGTH_SHORT).show();
+                    resultText.setText(String.format(Locale.getDefault(), "Result: %.2f", amount));
+                    return;
+                }
+
+                double result = convertTemperature(amount, from, to);
+                resultText.setText(String.format(Locale.getDefault(), "Result: %.2f", result));
             }
         });
         return view;
     }
+
     private double convertTemperature(double amount, String from, String to) {
         double celsius = 0;
         if (from.equals("Celsius")) {
@@ -98,6 +122,7 @@ public class TemperatureFragment extends Fragment {
         } else if (from.equals("Kelvin")) {
             celsius = amount - 273.15;
         }
+
         if (to.equals("Celsius")) {
             return celsius;
         } else if (to.equals("Fahrenheit")) {

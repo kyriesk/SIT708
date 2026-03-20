@@ -14,6 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Locale;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link FuelFragment#newInstance} factory method to
@@ -80,50 +82,94 @@ public class FuelFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inputText = editTextNumber.getText().toString();
+                String inputText = editTextNumber.getText().toString().trim();
                 if (inputText.isEmpty()) {
                     Toast.makeText(getActivity(), "Please enter a number", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                double amount = Double.parseDouble(inputText);
+
+                double amount;
+                try {
+                    amount = Double.parseDouble(inputText);
+                } catch (NumberFormatException e) {
+                    Toast.makeText(getActivity(), "Invalid numeric input", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (amount < 0) {
+                    Toast.makeText(getActivity(), "Value cannot be negative", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 String from = spinnerFrom.getSelectedItem().toString();
                 String to = spinnerTo.getSelectedItem().toString();
-                double result = convertFuel(amount, from, to);
-                resultText.setText("Result: " + result);
+
+                if (from.equals(to)) {
+                    Toast.makeText(getActivity(), "Source and target units are the same", Toast.LENGTH_SHORT).show();
+                    resultText.setText(String.format(Locale.getDefault(), "Result: %.2f", amount));
+                    return;
+                }
+
+                try {
+                    double result = convertFuel(amount, from, to);
+                    resultText.setText(String.format(Locale.getDefault(), "Result: %.2f", result));
+                } catch (ArithmeticException e) {
+                    Toast.makeText(getActivity(), "Error: Division by zero", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
         return view;
     }
+
     private double convertFuel(double amount, String from, String to) {
+        // Handle divisions by zero if amount is 0 and it's L/100km
+        if (amount == 0 && (from.equals("L/100km") || to.equals("L/100km"))) {
+            // Technically km/L = 100/0 is infinity. We should probably handle this.
+            // But if amount is 0, let's just return 0 or throw if appropriate.
+            if (from.equals("L/100km")) throw new ArithmeticException("Division by zero");
+        }
+
         double kmL = 0;
+        boolean efficiencyConversion = false;
+
         if (from.equals("km/L")) {
             kmL = amount;
+            efficiencyConversion = true;
         } else if (from.equals("L/100km")) {
+            if (amount == 0) throw new ArithmeticException("Division by zero");
             kmL = 100 / amount;
+            efficiencyConversion = true;
         } else if (from.equals("MPG (US)")) {
             kmL = 0.425 * amount;
-    }
-        if (to.equals("km/L")) {
-            return kmL;
-        } else if (to.equals("L/100km")) {
-            return 100 / kmL;
-        } else if (to.equals("MPG (US)")) {
-            return 0.425 / kmL;
+            efficiencyConversion = true;
+        }
+
+        if (efficiencyConversion) {
+            if (to.equals("km/L")) {
+                return kmL;
+            } else if (to.equals("L/100km")) {
+                if (kmL == 0) return 0; // Or handle as infinity
+                return 100 / kmL;
+            } else if (to.equals("MPG (US)")) {
+                return kmL / 0.425;
+            }
+            // If 'to' is not an efficiency unit, it's an incompatible conversion
+            return amount;
         }
 
         if (from.equals("Liters") && (to.equals("Gallons (US)"))) {
-             return amount / 3.785;
-        } else if (from.equals("Gallons (US)") && (to.equals("Liters"))){
+            return amount / 3.785;
+        } else if (from.equals("Gallons (US)") && (to.equals("Liters"))) {
             return amount * 3.785;
         }
 
         if (from.equals("Nautical Miles") && (to.equals("Kilometers"))) {
             return amount * 1.852;
-        } else if (from.equals("Kilometers") && (to.equals("Nautical Miles"))){
+        } else if (from.equals("Kilometers") && (to.equals("Nautical Miles"))) {
             return amount / 1.852;
         }
+
         return amount;
     }
 }

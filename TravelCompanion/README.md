@@ -4,8 +4,6 @@ TravelCompanion is a handy Android utility application designed to assist travel
 
 ## Features
 
-The application currently supports three main types of conversions:
-
 ### 1. Currency Converter
 Convert between popular global currencies using predefined exchange rates.
 - **Supported Currencies:** USD, AUD, EUR, JPY, GBP.
@@ -35,7 +33,7 @@ Easily switch between different temperature scales.
 ## Installation
 
 1. Clone the repository.
-2. Open the project in **Android Studio**.
+2. Open the project in Android Studio.
 3. Sync the project with Gradle files.
 4. Run the app on an Android emulator or a physical device.
 
@@ -49,5 +47,4 @@ Easily switch between different temperature scales.
 - `res/layout/`: Contains the XML layout files for the activity and fragments.
 - `res/values/strings.xml`: Contains the arrays for the spinners (e.g., `currency_array`, `fuel_array`, `temp_array`).
 
----
-*Developed as part of SIT708.*
+
