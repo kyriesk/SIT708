@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Quiz APP</string>
+
+    <!-- MainActivity strings -->
+    <string name="enter_your_name">Enter Your Name</string>
+    <string name="start_quiz">Start</string>
+    <string name="please_enter_name">Please enter your name</string>
+    <string name="welcome">Welcome to Quiz App</string>
+
+    <!-- QuizActivity strings -->
+    <string name="question_format" formatted="false">Question %d of %d</string>
+    <string name="submit_answer">Submit</string>
+    <string name="next_question">Next</string>
+    <string name="please_select_answer">Please select an answer</string>
+    <string name="progress_format" formatted="false">%d/%d</string>
+
+    <!-- ResultsActivity strings -->
+    <string name="results">Results</string>
+    <string name="your_score">Your Score</string>
+    <string name="score_format" formatted="false">%d/%d</string>
+    <string name="take_new_quiz">Take New Quiz</string>
+    <string name="finish">Finish Button</string>
+    <string name="congratulations" formatted="false">Congratulations %s!</string>
+
+    <!-- Theme strings -->
+    <string name="dark_mode">Dark Mode</string>
+    <string name="light_mode">Light Mode</string>
+</resources>

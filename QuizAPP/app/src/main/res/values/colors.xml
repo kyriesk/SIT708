@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Quiz colors -->
+    <color name="correct_answer">#4CAF50</color>
+    <color name="incorrect_answer">#F44336</color>
+    <color name="button_normal">#2196F3</color>
+    <color name="button_pressed">#1976D2</color>
+    <color name="progress_bar">#2196F3</color>
+
+    <!-- Light theme colors -->
+    <color name="light_primary">#2196F3</color>
+    <color name="light_background">#FFFFFF</color>
+    <color name="light_text">#000000</color>
+    <color name="light_card">#F5F5F5</color>
+
+    <!-- Dark theme colors -->
+    <color name="dark_primary">#1976D2</color>
+    <color name="dark_background">#121212</color>
+    <color name="dark_text">#FFFFFF</color>
+    <color name="dark_card">#1E1E1E</color>
+</resources>
