@@ -132,6 +132,10 @@ public class QuizActivity extends AppCompatActivity {
             return;
         }
         
+        // Reset answer state for new question
+        answerSubmitted = false;
+        selectedAnswer = -1;
+        
         Question question = quiz.getQuestion(currentQuestionIndex);
         if (question == null) {
             return;
