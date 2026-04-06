@@ -130,12 +130,12 @@ Columns:
 
 ## Installation & Setup
 
-- Step 1: Clone the Repository
-- Step 2: Open in Android Studio
-- Step 3: Sync Gradle Files
-- Step 4: Configure Local SDK Path (if needed)
-- Step 5: Run the Application
-- Step 6: Verify Installation
+- Clone the Repository
+- Open in Android Studio
+- Sync Gradle Files
+- Configure Local SDK Path (if needed)
+- Run the Application
+- Verify Installation
 
 ## Usage Guide
 
@@ -210,38 +210,6 @@ Columns:
   - Validation errors appear immediately
   - User can fix and retry
 
-## Development Guidelines
-
-### Adding a New Feature
-
-1. **Create Model**: Add new entity if needed in `model/` package
-2. **Create DAO**: Add database queries in `database/` package
-3. **Update Repository**: Add methods to access new data in `repository/` package
-4. **Create ViewModel**: Add LiveData and methods in `viewmodel/` package
-5. **Create UI**: Add Fragment in `ui/` package
-6. **Update Navigation**: Add route in `navigation/nav_graph.xml`
-7. **Create Layout**: Add XML layout in `res/layout/`
-
-### Code Style
-
-- Follow Google Android Code Style Guide
-- Use meaningful variable names
-- Add comments for complex logic
-- Keep methods small and focused (single responsibility)
-
-### Testing
-
-```bash
-# Run unit tests
-./gradlew test
-
-# Run instrumented tests
-./gradlew connectedAndroidTest
-
-# Generate coverage report
-./gradlew jacocoTestReport
-```
-
 ## Troubleshooting
 
 ### Build Issues
@@ -261,76 +229,4 @@ Solution:
 2. Add: implementation("androidx.recyclerview:recyclerview:1.3.0")
 ```
 
-### Runtime Issues
-
-**Problem**: App crashes on startup
-```
-Solution:
-1. Check logcat (View → Tool Windows → Logcat)
-2. Look for exception messages
-3. Verify AndroidManifest.xml is correct
-4. Check that all fragments are declared in nav_graph.xml
-```
-
-**Problem**: Events not saving
-```
-Solution:
-1. Verify Room database is initialized
-2. Check that database thread runs on background
-3. Verify EventDao methods are correct
-4. Check database file exists in device storage
-```
-
-**Problem**: Navigation not working
-```
-Solution:
-1. Verify NavHostFragment is in activity_main.xml
-2. Check nav_graph.xml has correct fragment IDs
-3. Verify action IDs match between code and XML
-4. Check BottomNavigationView menu items match nav destinations
-```
-
-## Performance Optimization
-
-- **Database Queries**: Used LiveData for automatic UI updates
-- **Threading**: Database operations run on background threads
-- **Memory**: RecyclerView uses view recycling for efficient list rendering
-- **UI Responsiveness**: ViewModel preserves data during configuration changes
-
-## Security Considerations
-
-- Data stored locally in SQLite (encrypted storage recommended for sensitive apps)
-- No external API calls (data never leaves device)
-- Input validation prevents SQL injection
-- Proper permission model for Android 6.0+
-
-## Future Enhancements
-
-Potential features for future versions:
-- Event reminders/notifications
-- Event categories with custom colors
-- Search and filter functionality
-- Event recurrence (repeat events)
-- Export events as CSV/PDF
-- Cloud backup integration
-- Dark theme support
-- Multi-language support
-- Event attachments (photos, documents)
-- Event location maps integration
-- Event sharing with other users
-
-## License
-
-This project is created for educational purposes as part of SIT708 (Mobile Application Development).
-
-## Contact & Support
-
-For questions or issues, please contact the development team or open an issue in the repository.
-
----
-
-**Version**: 1.0  
-**Last Updated**: March 2026  
-**Minimum SDK**: Android 6.0 (API 23)  
-**Target SDK**: Android 15 (API 36)
 
