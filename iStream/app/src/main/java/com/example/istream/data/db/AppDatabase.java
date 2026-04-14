@@ -29,7 +29,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                     AppDatabase.class,
                                     "istream.db"
                             )
-                            .fallbackToDestructiveMigration(false)
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }
@@ -37,4 +37,5 @@ public abstract class AppDatabase extends RoomDatabase {
         return INSTANCE;
     }
 }
+
 

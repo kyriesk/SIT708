@@ -14,9 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.istream.MainActivity;
 import com.example.istream.R;
 import com.example.istream.data.db.AppDatabase;
+import com.example.istream.data.entity.PlaylistItem;
 import com.example.istream.session.SessionManager;
 import com.example.istream.ui.home.HomeActivity;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -75,7 +77,7 @@ public class PlaylistActivity extends AppCompatActivity {
     private void loadPlaylist() {
         long userId = sessionManager.getUserId();
         executor.execute(() -> {
-            var items = database.playlistDao().getByUserId(userId);
+            List<PlaylistItem> items = database.playlistDao().getByUserId(userId);
             runOnUiThread(() -> {
                 adapter.submitList(items);
                 textEmpty.setVisibility(items.isEmpty() ? View.VISIBLE : View.GONE);
@@ -96,4 +98,6 @@ public class PlaylistActivity extends AppCompatActivity {
         super.onDestroy();
     }
 }
+
+
 
